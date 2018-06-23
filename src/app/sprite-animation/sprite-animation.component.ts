@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, animate } from '@angular/core';
 
 @Component({
   selector: 'sprite-animation',
@@ -9,9 +9,13 @@ export class SpriteAnimationComponent {
 
   @Input()
   data: any;
+  @Input()
+  start: boolean;
 
   imagePaths: string[];
   times: string[];
+
+  img: string;
 
   constructor() { }
 
@@ -28,9 +32,26 @@ export class SpriteAnimationComponent {
         }
         console.log(this.imagePaths)
       }
+      this.prepareAnimation();
     }
   }
 
+  ngDoCheck() {
+    let i = 0;
+    this.img = this.imagePaths[i];
+    setTimeout(() => {
+      this.img = this.imagePaths[i];
+    }, this.data.times[i])
+    if (i+1 == this.imagePaths.length) {
+      i = 0;
+    }
+  }
+
+  prepareAnimation() {
+    for (let i = 0; i < this.imagePaths.length; i++) {
+      this.data.times.push(this.data.times[i] || 500);
+    }
+  }
 
 
 }
